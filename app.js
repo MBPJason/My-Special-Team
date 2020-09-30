@@ -9,6 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { endianness } = require("os");
 
 const team = [];
 
@@ -107,26 +108,100 @@ internQuestions = [
   },
 ];
 
+function newMember() {
+  inquirer
+    .prompt([
+      {
+        type: "confirm",
+        message: questions[1],
+        name: "newMember",
+      },
+    ])
+    .then(function (data) {
+      if (data.newMember === true) {
+        willBuild === true;
+      } else {
+          renderAll();
+      }
+    });
+}
+
+function renderAll() {
+    console.log("Getting the monkeys to build the page...");
+    fs.writeFile(outputPath, render(team), function (err) {
+        if (err) {
+            console.log(err);
+        }
+        console.log("Wow they completed the task!");
+    })
+}
+
+
+
+
+// Calling of Promises
 async function buildTeam() {
   try {
-      const willBuild = await inquirer.prompt([
-          {
-            type: "confirm",
-            message: questions[0],
-            name: "yesOrNo",
-          }
+    const willBuild = await inquirer.prompt([
+      {
+        type: "confirm",
+        message: questions[0],
+        name: "yesOrNo",
+      },
+    ]);
+
+    if (willBuild === false) {
+      console.log("Sorry to hear. Good luck with your project!");
+    } else {
+      const { memberType } = await inquirer.prompt([
+        {
+          type: "list",
+          message: "Which member of your team would you like to add?",
+          choices: ["Engineer", "Intern", "Manager"],
+          name: "memberType",
+        },
       ]);
 
-      if (willBuild === false) {
-          console.log("Sorry to hear. Good luck with your project!");
-      } else {
-          const 
+      if (memberType === "Engineer") {
+        const engineer = await inquirer.prompt(engineerQuestions);
+        let newEngineer = new Engineer(
+          engineer.name,
+          engineer.id,
+          engineer.email,
+          engineer.github
+        );
+        team.push(newEngineer);
+        newMember();
+      } else if (memberType === "Manager") {
+        const manager = await inquirer.prompt(engineerQuestions);
+        let newManager = new Manager(
+          manager.name,
+          manager.id,
+          manager.email,
+          manager.officeNumber
+        );
+        team.push(newManager);
+        newMember();
+      } else if (memberType === "Intern") {
+        const intern = await inquirer.prompt(engineerQuestions);
+        let newIntern = new Intern(
+          intern.name,
+          intern.id,
+          intern.email,
+          intern.github
+        );
+        team.push(newIntern);
+        newMember();
       }
+    }
   } catch (err) {
     console.log("Oops something went wrong");
     console.log(err);
   }
 }
+
+// Starting team build app
+buildTeam();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
