@@ -10,6 +10,123 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const team = [];
+
+const questions = [
+  "Would you like to build a team?",
+  "Would you like to add a team member?",
+  "Which team member would you like to add?",
+
+  {
+    standardQuestions: [
+      "What is their name?",
+      "What is their Id number?",
+      "What is their email address?",
+    ],
+  },
+
+  {
+    Engineer: "What is your engineer's Github name?",
+  },
+
+  {
+    Manager: "What is your manager's office number?",
+  },
+
+  {
+    Intern: "What school is your intern from?",
+  },
+];
+
+engineerQuestions = [
+  {
+    type: "input",
+    message: questions[3].standardQuestions[0],
+    name: "name",
+  },
+  {
+    type: "input",
+    message: questions[3].standardQuestions[1],
+    name: "id",
+  },
+  {
+    type: "input",
+    message: questions[3].standardQuestions[2],
+    name: "email",
+  },
+  {
+    type: "input",
+    message: questions[4].Engineer,
+    name: "github",
+  },
+];
+
+managerQuestions = [
+  {
+    type: "input",
+    message: questions[3].standardQuestions[0],
+    name: "name",
+  },
+  {
+    type: "input",
+    message: questions[3].standardQuestions[1],
+    name: "id",
+  },
+  {
+    type: "input",
+    message: questions[3].standardQuestions[2],
+    name: "email",
+  },
+  {
+    type: "input",
+    message: questions[4].Manager,
+    name: "officeNumber",
+  },
+];
+
+internQuestions = [
+  {
+    type: "input",
+    message: questions[3].standardQuestions[0],
+    name: "name",
+  },
+  {
+    type: "input",
+    message: questions[3].standardQuestions[1],
+    name: "id",
+  },
+  {
+    type: "input",
+    message: questions[3].standardQuestions[2],
+    name: "email",
+  },
+  {
+    type: "input",
+    message: questions[4].Intern,
+    name: "school",
+  },
+];
+
+async function buildTeam() {
+  try {
+      const willBuild = await inquirer.prompt([
+          {
+            type: "confirm",
+            message: questions[0],
+            name: "yesOrNo",
+          }
+      ]);
+
+      if (willBuild === false) {
+          console.log("Sorry to hear. Good luck with your project!");
+      } else {
+          const 
+      }
+  } catch (err) {
+    console.log("Oops something went wrong");
+    console.log(err);
+  }
+}
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
