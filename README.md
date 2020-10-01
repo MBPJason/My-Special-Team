@@ -8,7 +8,7 @@ A CLI app designed to make your special project team, with managers, engineers, 
 
 ![Preview Screenshot](./assets/images/Preview.png)
 
-## How to access
+## How to install and access
 
 * Run npm install
 * Run npm start
