@@ -80,7 +80,7 @@ managerQuestions = [
   },
   {
     type: "input",
-    message: questions[4].Manager,
+    message: questions[5].Manager,
     name: "officeNumber",
   },
 ];
@@ -103,11 +103,12 @@ internQuestions = [
   },
   {
     type: "input",
-    message: questions[4].Intern,
+    message: questions[6].Intern,
     name: "school",
   },
 ];
 
+// request an additional team member
 function newMember() {
   inquirer
     .prompt([
@@ -118,31 +119,93 @@ function newMember() {
       },
     ])
     .then(function (data) {
-      if (data.newMember === true) {
-        willBuild === true;
+      if (data.newMember) {
+        memType();
       } else {
-          renderAll();
+        renderAll();
+      }
+    });
+}
+// Choose which team member you want
+function memType() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Which member of your team would you like to add?",
+        choices: ["Engineer", "Intern", "Manager"],
+        name: "memberType",
+      },
+    ])
+    .then(function (data) {
+      if (data.memberType === "Engineer") {
+        newEngineer();
+      } else if (data.memberType === "Manager") {
+        newManager();
+      } else if (data.memberType === "Intern") {
+        newIntern();
       }
     });
 }
 
+// Builds Html Page
 function renderAll() {
-    console.log("Getting the monkeys to build the page...");
-    fs.writeFile(outputPath, render(team), function (err) {
-        if (err) {
-            console.log(err);
-        }
-        console.log("Wow they completed the task!");
-    })
+  console.log("Getting the monkeys to build the page...");
+  fs.writeFile(outputPath, render(team), function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Wow they completed the task!");
+    }
+  });
 }
 
+// Engineer Promise
+function newEngineer() {
+  inquirer.prompt(engineerQuestions).then(function (engineer) {
+    let newEngineer = new Engineer(
+      engineer.name,
+      engineer.id,
+      engineer.email,
+      engineer.github
+    );
+    team.push(newEngineer);
+    newMember();
+  });
+}
 
+// Manager Promise
+function newManager() {
+  inquirer.prompt(managerQuestions).then(function (manager) {
+    let newManager = new Manager(
+      manager.name,
+      manager.id,
+      manager.email,
+      manager.officeNumber
+    );
+    team.push(newManager);
+    newMember();
+  });
+}
 
+// Intern Promise
+function newIntern() {
+  inquirer.prompt(internQuestions).then(function (intern) {
+    let newIntern = new Intern(
+      intern.name,
+      intern.id,
+      intern.email,
+      intern.school
+    );
+    team.push(newIntern);
+    newMember();
+  });
+}
 
 // Calling of Promises
 async function buildTeam() {
   try {
-    const willBuild = await inquirer.prompt([
+    let willBuild = await inquirer.prompt([
       {
         type: "confirm",
         message: questions[0],
@@ -153,46 +216,7 @@ async function buildTeam() {
     if (willBuild === false) {
       console.log("Sorry to hear. Good luck with your project!");
     } else {
-      const { memberType } = await inquirer.prompt([
-        {
-          type: "list",
-          message: "Which member of your team would you like to add?",
-          choices: ["Engineer", "Intern", "Manager"],
-          name: "memberType",
-        },
-      ]);
-
-      if (memberType === "Engineer") {
-        const engineer = await inquirer.prompt(engineerQuestions);
-        let newEngineer = new Engineer(
-          engineer.name,
-          engineer.id,
-          engineer.email,
-          engineer.github
-        );
-        team.push(newEngineer);
-        newMember();
-      } else if (memberType === "Manager") {
-        const manager = await inquirer.prompt(engineerQuestions);
-        let newManager = new Manager(
-          manager.name,
-          manager.id,
-          manager.email,
-          manager.officeNumber
-        );
-        team.push(newManager);
-        newMember();
-      } else if (memberType === "Intern") {
-        const intern = await inquirer.prompt(engineerQuestions);
-        let newIntern = new Intern(
-          intern.name,
-          intern.id,
-          intern.email,
-          intern.github
-        );
-        team.push(newIntern);
-        newMember();
-      }
+      memType();
     }
   } catch (err) {
     console.log("Oops something went wrong");
@@ -202,26 +226,3 @@ async function buildTeam() {
 
 // Starting team build app
 buildTeam();
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
