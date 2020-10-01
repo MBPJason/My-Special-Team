@@ -4,14 +4,15 @@ A CLI app designed to make your special project team, with managers, engineers, 
 
 ## Preview
 
-![Preview Screenshot](./assets/images/Preview2.png)
-
 ![Preview Screenshot](./assets/images/Preview.png)
 
 ## How to install and access
 
 * Run npm install
 * Run npm start
+* Get your html fie from  the "output" directory/folder
+
+![Preview Screenshot](./assets/images/Preview2.png)
 
 ## What I did
 
@@ -21,7 +22,7 @@ Used Inquirer to prompt the user to input their team members and the data of sai
 
 It should have no issues with readability
 
-Comments where used to explain what items are doing what as to not cause confusion
+Comments were used to explain what items are doing what as to not cause confusion
 
 ## Contributing
 
