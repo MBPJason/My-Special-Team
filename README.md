@@ -12,7 +12,7 @@ A CLI app designed to make your special project team, with managers, engineers, 
 * Run npm start
 * Get your html file from the "output" directory/folder
 
-![Preview Screenshot](./assets/images/Preview2.png)
+![Preview Screenshot](./assets/images/PreviewCLI.png)
 
 ## What I did
 
