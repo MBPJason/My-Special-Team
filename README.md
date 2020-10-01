@@ -4,6 +4,8 @@ A CLI app designed to make your special project team, with managers, engineers, 
 
 ## Preview
 
+![Preview Screenshot](./assets/images/Preview2.png)
+
 ![Preview Screenshot](./assets/images/Preview.png)
 
 ## How to access
